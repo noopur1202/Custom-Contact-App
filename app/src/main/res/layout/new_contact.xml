@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/darkGrey"
+        android:id="@+id/actionBarAddNew">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_marginLeft="5dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:id="@+id/backAddNew"
+            android:onClick="previousActivity"
+            android:src="@drawable/ic_arrow_back"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add New Contact"
+            android:textColor="#ffffff"
+            android:id="@+id/titleAddNew"
+            android:textSize="20dp"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/actionBarAddNew"
+        android:padding="20dp"
+        android:id="@+id/newForm">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/newPhoto"
+        android:src="@mipmap/ic_launcher_round"
+        android:layout_margin="30dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/newName"
+        android:hint="Name"
+        android:layout_below="@+id/newPhoto"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/newPhone"
+        android:hint="Phone"
+        android:layout_below="@+id/newName"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/newEmail"
+        android:hint="Email"
+        android:layout_below="@+id/newPhone"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/newAddress"
+        android:hint="Address"
+        android:layout_below="@+id/newEmail"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/newSave"
+        android:layout_alignParentBottom="true"
+        android:text="Save"
+        android:textAllCaps="false"
+        android:layout_marginBottom="20dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

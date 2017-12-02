@@ -6,11 +6,40 @@
     android:layout_height="match_parent"
     tools:context="amith.example.com.customcontactapp.MainActivity">
 
-    <GridView
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/darkGrey"
+        android:id="@+id/action_bar">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact Book"
+            android:textColor="#ffffff"
+            android:id="@+id/title"
+            android:textSize="20dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:id="@+id/menu"
+            android:src="@drawable/grid"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"/>
+
+    </RelativeLayout>
+
+
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:numColumns="2"
-        android:id="@+id/gridList"/>
+        android:id="@+id/android:list"
+        android:layout_below="@+id/action_bar"/>
 
     <Button
         android:layout_width="match_parent"

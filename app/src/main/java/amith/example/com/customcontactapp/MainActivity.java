@@ -1,63 +1,106 @@
 package amith.example.com.customcontactapp;
 
+import android.app.ListActivity;
+import android.content.Intent;
+import android.database.ContentObserver;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.provider.ContactsContract;
+import android.support.v7.widget.PopupMenu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ListActivity {
 
-    List<String> photo, number;
-    List<String> name = new ArrayList<>();
-    CustomCellAdapter customCell;
-    GridView gridView;
+    ListView listview;
+    Cursor cursor;
+    ImageView menu;
+    MyCursorAdapter myCursorAdapter;
+    Button addContact;
+    String name;
+    String phonenumber;
+    public List<String> nameList, phoneList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final Button addContact = (Button)findViewById(R.id.addContact);
-        gridView = (GridView)findViewById(R.id.gridList);
-        name.addAll(Arrays.asList("a","b","c","d","e","f"));
-        customCell = new CustomCellAdapter(getApplicationContext(),name,number);
-        gridView.setAdapter(customCell);
+        MyContentObserver contentObserver = new MyContentObserver();
+        getContactsList();
 
+        menu = (ImageView)findViewById(R.id.menu);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                PopupMenu popup = new PopupMenu(MainActivity.this, menu);
+                popup.getMenuInflater().inflate(R.menu.toggle_menu, popup.getMenu());
+                popup.show();
+            }
+        });
+
+        addContact = (Button)findViewById(R.id.addContact);
         addContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NewAddFragment rootFragment = new NewAddFragment();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.mainContactView,rootFragment);
-                fragmentTransaction.commit();
+                Intent addNew = new Intent(getApplicationContext(), NewContact.class);
+                startActivity(addNew);
             }
         });
+
+//        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                int pos = parent.getPositionForView(view);
+//            }
+//        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toggle_menu,menu);
-        return true;
+    public void getContactsList(){
+        cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,null,null,null);
+        startManagingCursor(cursor);
+
+        String[] from = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER,
+                ContactsContract.CommonDataKinds.Phone.PHOTO_URI, ContactsContract.CommonDataKinds.Phone._ID};
+
+        int[] to = {R.id.contactName, R.id.contactNumber, R.id.contactPhoto};
+        myCursorAdapter = (MyCursorAdapter) new MyCursorAdapter(this, R.layout.single_contact_layout, cursor, from, to);
+        setListAdapter(myCursorAdapter);
+
+        listview = getListView();
+        listview.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_grid) {
-            gridView.setNumColumns(2);
+    private class MyContentObserver extends ContentObserver {
+
+        public MyContentObserver() {
+            super(null);
         }
-        if (id == R.id.action_list) {
-            gridView.setNumColumns(1);
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
         }
-        return super.onOptionsItemSelected(item);
+
     }
+
+//    public void getContactsIntoArrayList(){
+//
+//        nameList=new ArrayList<String>();
+//        phoneList=new ArrayList<String>();
+//
+//        cursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null, null, null);
+//        while (cursor.moveToNext()) {
+//            name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+//            phonenumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//            nameList.add(name);
+//            phoneList.add(phonenumber);
+//        }
+//        cursor.close();
+//    }
 }
